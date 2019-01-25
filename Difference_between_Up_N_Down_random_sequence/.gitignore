@@ -1,5 +1,4 @@
 .idea/
-result/
 src/__pycache__/
 src/density_graphic_maker_comparison.R
 src/new command_lod.sh

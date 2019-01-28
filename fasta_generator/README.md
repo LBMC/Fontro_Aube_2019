@@ -14,7 +14,7 @@ database="<database>"
 Then make sure that `python 2.7` is installed along with the following module:
 * mysql.connector (version 2.4.1)
 
-And run the following commands :
+And run the following commands (this operation may take some time):
 
 ```sh
 python2 src/make_control_dictionaries.py
@@ -42,10 +42,6 @@ This program works with `python 2.7` and the following modules :
 * `copy` : to make true copy of variables in python
 * `sys` : to specify another directory of import
 
-You must launch the following comand before launching it to create the contol dictionaries
-```sh
-python src/make_control_dictionaries.py.py
-```
 
 ## Running the program
 

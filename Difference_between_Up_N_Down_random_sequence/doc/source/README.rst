@@ -4,13 +4,13 @@ Random fasta comparater's documentation
 Prerequisites
 --------------
 
-**Before launching anything a file named** ``src/config.py`` **with the following content:**
+**Before launching anything a file named** ``src/config.py`` **with the following content must be created :**
 
 .. code-block:: python
 
   #!/usr/bin/env  python3
 
-  path = <your_path>
+  path = "../fasta_generator/src"
 
   fgdfre = "%s/fasta_generator_dinucleotide_from_real_exon.py" % path
   fg = "%s/fasta_generator.py" % path
@@ -18,7 +18,8 @@ Prerequisites
   frg = "%s/fasta_reverse_generator.py" % path
   fg2fre = "%s/fasta_generator_2features_real_exons_.py" % path
 
-Where `<your_path>` corresponds to the folder containing the scripts ``fasta_generator_dinucleotide_from_real_exon.py``,  ``fasta_generator.py``, ``fasta_generator_from_real_exons.py``, ``fasta_reverse_generator.py`` and ``fasta_generator_2features_real_exons_.py``
+Where `../fasta_generator/src` corresponds to the folder containing the scripts ``fasta_generator_dinucleotide_from_real_exon.py``,  ``fasta_generator.py``, ``fasta_generator_from_real_exons.py``, ``fasta_reverse_generator.py`` and ``fasta_generator_2features_real_exons_.py``. If you've moved those script in another folder you can change those links.
+You must also read the README located in ``../fasta_generator` to be able to lanch the scripts in the directory `../fasta_generator/src`
 
 
 This program uses `python <https://www.python.org>`_ version ``3.5`` and this following dependencies:
@@ -31,51 +32,50 @@ This program uses `python <https://www.python.org>`_ version ``3.5`` and this fo
 
 
 
-Description
------------
+Description of the script `random_fasta_comparsion_high_N_low.py`
+----------------------------------------------------------------
 
 The goal of this script is to:
- 1. Create a lot of random fasta enriched in a particular unit (*nucleotide*, *di-nucleotide* or *feature*) and calculates the mean frequency of this unit in the fasta file
- 2. Create a lot of random fasta impoverished in **the same unit** (*nucleotide*, *di-nucleotide* or *feature*) and calculates the mean frequency of this unit in the fasta file
+ 1. Generate a couple of fasta files:
+  * One fasta file contain random sequences enriched in a particular unit :math:`F` (*nucleotide*, *di-nucleotide* or *feature*)
+  * The other fasta file contain random sequences impoverished for this same unit :math:`F`.
+ 2. Then , it compute for each fasta files, their content for the enriched or impoverished unit. It also compute the relative frequency for this unit :math:`F` between the two fasta files generated (calculation explained after).
+ 3. Finally,  it compute for each fasta file, their content for another interest unit :math:`U` It also compute the relative frequency for this unit :math:`U` between the two fasta files generated (calculation explained after).
+ 4. This process is repeated a number :math:`X` of time and every value computed at step 2 and 3 are reported in a summary file.
+ 5. When this process is finished we calculate the mean and the standard deviation of:
+  *. The average and the standard deviation of the average frequencies and the relative frequency of :math:`F` and  :math:`U` in the :math:`X` impoverished and enriched fasta files generated
 
-And then compare their frequency for this unit for each couple of random fasta enriched and impoverished \
-(for this unit). To compare their frequency, the relative frequency is computed
 
 The relative frequency is calculated as follow:
 
 .. math::
 
-  F_{relative} = \frac{F_{interest} - F_{control}}{F_{control}}
-
-.. note::
-
-  The random fasta scripts are computed thank to another program normaly localized in the following folder ``fasta_generator/src/``
+  F_{relative} = \frac{F_{1} - F_{2}}{F_{2}}
 
 Where:
   * :math:`F_{relative}` is the relative frequency of a unit :math:`F`
-  * :math:`F_{interest}` is the frequency of :math:`F` in the interest set of exons
-  * :math:`F_{control}` is the frequency of :math:`F` in the control sets of exons
+  * :math:`F_{1}` is the average frequency of :math:`F` of every sequence in a fasta file '1'
+  * :math:`F_{2}` is the average frequency of :math:`F` of every sequence in a fasta file '2'
 
-We then calculate the mean and the standard deviation of:
-    1. The list of frequencies in **unit** obtained by creating random fasta files enriched in this **unit**
-    2. The list of frequencies in **unit** obtained by creating random fasta files impoverished in this **unit**
-    3. The list of relative frequencies between random fasta files enriched and impoverished in this **unit**
+
+The fasta files can be generated in two different ways:
+  1. CUB sequences corresponds to generated sequences having the same codon biais usage than the one present in fasterDB control exons (CCE exons). Then those sequences are enriched or impoverished for the unit :math:`F` by mutating every sequences, one nucleotide at a time.
+  2. MUT sequences corresponds to exon sequences selected randomly from FasterDB and then mutated, one nucleotide at a time, to increase or deacrease the frequency of
+
 
 Example
 #######
 
-For example if we want to generate  100 fasta files having:
+For example if we want to generate 100 couples of fasta files having:
   * A high content of **A** nucleotide : :math:`freq_{high}(A)=0.345`
   * A low content of **A** nucleotide : :math:`freq_{low}(A)=0.24`
-
-We must execute this command line :
+And checking for their content in hydrophilic and hydrophobic encoded amino acids, we must execute this command line :
 
 .. code-block:: bash
 
-  python3 src/random_fasta_comparsion_high_N_low.py --type_unit nt --unit A --freq_high 0.345 --freq_low 0.23 --output result/ --iteration 100 --iscub True
+  python3 src/random_fasta_comparsion_high_N_low.py --type_unit nt --unit A --freq_high 0.345 --freq_low 0.23 --output result/ --iteration 100 --iscub True --type_unit_interest feature,feature --unit_interest Hydrophilic#1,Hydrophobic#1
 
-This will create a file in the ``result/`` folder named : ``nt_A_frequency_comparison_between_100_CUB_fasta_file-high:0.345_low:0.23.tsv``
-
+This will create a file in the ``result/`` folder named : ``feature,feature_Hydrophilic#1,Hydrophobic#1_frequency_comparison_between_100_CUB_fasta_file-high_A:0.345_low_A:0.23.tsv``
 The content of this file is displayed below:
 
 .. figure:: images/content.png
@@ -84,11 +84,19 @@ The content of this file is displayed below:
   Content of the result file
 
 .. note::
-  1. The 2 last lines corresponds to the mean and the standart deviation of each column.
-  2. The first column (exept the 2 last lines) corresponds to the mean frequency of sequences in fasta file having an high content of **A** (:math:`freq_{high}(A)=0.345`)
+  1. The 2 lines before the last one, corresponds to the mean and the standart deviation of each column.
+  2. The last line corresponds to the p-value of a t-test made on the average frequencies of Adenine between the 100 enriched and impoverished fasta files in Adenine (values in columns 1 and 2 without the 3 last lines).
+  2. The first column (exept the 2 last lines) corresponds to the mean frequency of sequences in each fasta file having an high content of **A** (:math:`freq_{high}(A)=0.345`)
   3. The second column (exept the 2 last lines) corresponds to the mean frequency of sequences in fasta file having an low content of **A** (:math:`freq_{low}(A)=0.24`)
   4. The third and last column (exept the 2 last lines) correspond the the relative frequency : :math:`F_{relative} = \frac{F_{interest} - F_{control}}{F_{control}}`
+  5. There is 6 other columns (not shown) that are exaclty the same as the 3 first but for hydrophilic, and hydrophobic average frequencies in the 100 enriched and impoveriched fasta files in Adenine.
 
+
+Description of the script `src/random_fasta_dependant_feature_high_N_low.py`
+----------------------------------------------------------------------------
+
+The script ``src/random_fasta_dependant_feature_high_N_low.py`` is very similar to the one explained above :
+* It generates sequences enriched (or impoverished) for **two** amino acid physicochemical properties
 
 
 Usage

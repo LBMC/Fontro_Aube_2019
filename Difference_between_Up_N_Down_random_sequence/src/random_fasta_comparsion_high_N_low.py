@@ -11,22 +11,6 @@ The goal of this script is to:
 And then compare their frequency for this unit for each couple of random fasta enriched and impoverished \
 (for this unit). To compare their frequency, the relative frequency is computed
 
-The relative frequency is calculated as follow:
-
-.. math::
-
-  F_{relative} = \frac{F_{interest} - F_{control}}{F_{control}}
-
-Where:
-  * :math:`F_{relative}` is the relative frequency of a unit :math:`F`
-  * :math:`F_{interest}` is the frequency of :math:`F` in the interest set of exons
-  * :math:`F_{control}` is the frequency of :math:`F` in the control sets of exons
-
-We then calculate the mean and the standard deviation of:
-    1. The list of frequencies in **unit** obtained by creating random fasta files enriched in this **unit**
-    2. The list of frequencies in **unit** obtained by creating random fasta files impoverished in this **unit**
-    3. The list of relative frequencies between random fasta files enriched and impoverished in this **unit**
-
 """
 
 import subprocess

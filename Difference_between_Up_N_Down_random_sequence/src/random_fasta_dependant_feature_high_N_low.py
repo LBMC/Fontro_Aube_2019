@@ -11,22 +11,6 @@ The goal of this script is to:
 And then compare their frequency for this unit for each couple of random fasta enriched and impoverished \
 (for this unit). To compare their frequency, the relative frequency is computed
 
-The relative frequency is calculated as follow:
-
-.. math::
-
-  F_{relative} = \frac{F_{interest} - F_{control}}{F_{control}}
-
-Where:
-  * :math:`F_{relative}` is the relative frequency of a unit :math:`F`
-  * :math:`F_{interest}` is the frequency of :math:`F` in the interest set of exons
-  * :math:`F_{control}` is the frequency of :math:`F` in the control sets of exons
-
-We then calculate the mean and the standard deviation of:
-    1. The list of frequencies in **unit** obtained by creating random fasta files enriched in this **unit**
-    2. The list of frequencies in **unit** obtained by creating random fasta files impoverished in this **unit**
-    3. The list of relative frequencies between random fasta files enriched and impoverished in this **unit**
-
 """
 
 import subprocess
@@ -252,12 +236,7 @@ def get_relative_freq_values(list_high, list_low):
     for this unit
     :param list_low: (list of float) list of mean frequencies in a particular unit in a list of fasta file impoverished \
     for this unit
-    :return: (list of float) relative frequencies for each value of list_high and list low. i.e \
-
-    .. code-block:: bash
-
-        relative\_freq[i] = \frac{list_high[i] - list_low[i]}{list_low[i]}
-
+    :return: (list of float) relative frequencies for each value of list_high and list low.
 
     """
     relative_freq = []
@@ -387,10 +366,10 @@ def fusion_stretch_count_list(stretch_count_up, stretch_count_down, stretch_coun
     :param stretch_count_up: (list of list of int) give the proportion of exons having at least one strecth \
     of size given by global variable ``strecthes`` (for each stretch in strecthes there's a sublist in \
     stretch_count_up)
-    :param stretch_count_down:(list of list of int) give the proportion of exons having at least one strecth \
+    :param stretch_count_down: (list of list of int) give the proportion of exons having at least one strecth \
     of size given by global variable ``strecthes`` (for each stretch in strecthes there's a sublist in \
     stretch_count_down)
-    :param stretch_count_rel:(list of list of float) give the relative proportion of exons having at least 1 \
+    :param stretch_count_rel: (list of list of float) give the relative proportion of exons having at least 1 \
     streact of the different kind of stretch studied (each sublist is the relative frequency of a \
     stretch for the given number of fasta file created)
     :return: A list containing a sublist of stretch_count_up followed by a sublist of stretch_count_down
@@ -464,11 +443,6 @@ def relative_frequency_stretch(stretch_count_high, stretch_count_low):
     :return:
         * The relative frequency of of stretch between the count up and the count down for the different kind of \
         stretch studied
-    The relative frequency is calculated as follow
-
-    .. code-block:
-
-        \frac{stretch_count_up[i] - stretch_count_low[i]}{stretch_count_low[i]}
 
     """
     rel_freq = [[] for j in range(len(stretches))]

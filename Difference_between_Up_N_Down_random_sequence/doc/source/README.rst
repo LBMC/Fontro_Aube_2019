@@ -1,6 +1,10 @@
 Random fasta comparater's documentation
 =======================================
 
+.. note::
+
+  Feature : low complexity sequences
+
 Prerequisites
 --------------
 

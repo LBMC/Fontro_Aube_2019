@@ -1,3 +1,26 @@
+#Prerequisites
+
+Before doing anything you must create a file in your `scr/` a file named `config.py` with the following content :
+
+```py
+# Connection to fasterDB
+user="<user>"
+password="<password>"
+host="<host>"
+database="<database>"
+```
+"\<user\>" and "\<password\>" corresponds to you username and password that allow you to connect the "\<host\>" with the FasterDB ("\<database\>") database on it.
+
+Then make sure that `python 2.7` is installed along with the following module:
+* mysql.connector (version 2.4.1)
+
+And run the following commands :
+
+```sh
+python2 src/make_control_dictionaries.py
+```
+
+
 # I - Program `fasta_generator.py`
 
 ## Description
@@ -8,7 +31,8 @@ Fasta generator program, (`fasta_generator.py`) allow to create a fasta file (co
  3.  You can also create a sequences having codon proportion clause to the one of ACE/CCE/ALL exons of fasterDB and enriched it (**not impoverished**) with one particular di-nucleotide
 
 
-## Prerequisite
+## Prerequisites
+
 
 This program works with `python 2.7` and the following modules :
 * `random` : for random suffling of sequences

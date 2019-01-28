@@ -6,8 +6,9 @@ The goal of this script is perform the statistical analysis of the figure 6B of 
 
 The list of all activated and repressed exons by SRSF1, SRSF2, SRSF3, and TRA2 must have been processed by the tRNA program with this command line :
 ```sh
-python3 main_program.py --up all_repressed_exon_SF1.txt --down all_activated_exon_SF1.txt --enrichment False --exon_type CCE
+python3 main_program.py --up all_repressed_exon_SFname.txt --down all_activated_exon_SFname.txt --enrichment False --exon_type CCE
 ```
+
 This command line will produce some query result_files that must be placed into the ``data`` folder of this project with the following architecture:
 ```sh
 data/

@@ -60,3 +60,5 @@ you can launch the following command:
 ```sh
 bash src/command.sh
 ```
+
+It will produce some figures that have been used in the article.

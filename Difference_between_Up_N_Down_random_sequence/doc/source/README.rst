@@ -18,8 +18,8 @@ Prerequisites
   frg = "%s/fasta_reverse_generator.py" % path
   fg2fre = "%s/fasta_generator_2features_real_exons_.py" % path
 
-Where `../fasta_generator/src` corresponds to the folder containing the scripts ``fasta_generator_dinucleotide_from_real_exon.py``,  ``fasta_generator.py``, ``fasta_generator_from_real_exons.py``, ``fasta_reverse_generator.py`` and ``fasta_generator_2features_real_exons_.py``. If you've moved those script in another folder you can change those links.
-You must also read the README located in ``../fasta_generator` to be able to lanch the scripts in the directory `../fasta_generator/src`
+Where ``../fasta_generator/src`` corresponds to the folder containing the scripts ``fasta_generator_dinucleotide_from_real_exon.py``,  ``fasta_generator.py``, ``fasta_generator_from_real_exons.py``, ``fasta_reverse_generator.py`` and ``fasta_generator_2features_real_exons_.py``. If you've moved those scripts in another folder you can change the ``path``.
+You must also read the README located in ``../fasta_generator`` to be able to lanch the scripts in the directory ``../fasta_generator/src``
 
 
 This program uses `python <https://www.python.org>`_ version ``3.5`` and this following dependencies:
@@ -33,24 +33,27 @@ This program uses `python <https://www.python.org>`_ version ``3.5`` and this fo
 
 
 Description of the script `random_fasta_comparsion_high_N_low.py`
-----------------------------------------------------------------
+-----------------------------------------------------------------
 
 The goal of this script is to:
  1. Generate a couple of fasta files:
-  * One fasta file contain random sequences enriched in a particular unit :math:`F` (*nucleotide*, *di-nucleotide* or *feature*)
-  * The other fasta file contain random sequences impoverished for this same unit :math:`F`.
- 2. Then , it compute for each fasta files, their content for the enriched or impoverished unit. It also compute the relative frequency for this unit :math:`F` between the two fasta files generated (calculation explained after).
- 3. Finally,  it compute for each fasta file, their content for another interest unit :math:`U` It also compute the relative frequency for this unit :math:`U` between the two fasta files generated (calculation explained after).
- 4. This process is repeated a number :math:`X` of time and every value computed at step 2 and 3 are reported in a summary file.
+
+  * One fasta file contains random sequences enriched in a particular unit :math:`F` (*nucleotide*, *di-nucleotide* or *amino acid physicochemical properties*)
+  * The other fasta file contains random sequences impoverished for this same unit :math:`F`.
+
+ 2. Then , it computes for each fasta files, their content for the enriched or impoverished unit :math:`F`. It also compute the relative frequency for this unit :math:`F` between the two fasta files generated (calculation explained after).
+ 3. Finally,  it computes for each fasta file, their content for another interest unit :math:`U`. It also compute the relative frequency for this unit :math:`U` between the two fasta files generated (calculation explained after).
+ 4. The steps 1-3 are repeated a number :math:`X` of time and every value computed at step 2 and 3 are reported in a summary file.
  5. When this process is finished we calculate the mean and the standard deviation of:
-  *. The average and the standard deviation of the average frequencies and the relative frequency of :math:`F` and  :math:`U` in the :math:`X` impoverished and enriched fasta files generated
+
+  * The average and the standard deviation of the frequencies and the relative frequencies of :math:`F` and  :math:`U` in the :math:`X` impoverished and enriched fasta files generated are computed
 
 
 The relative frequency is calculated as follow:
 
 .. math::
 
-  F_{relative} = \frac{F_{1} - F_{2}}{F_{2}}
+  F_{relative} = \frac{F_{1} - F_{2}}{F_{2}} \times 100
 
 Where:
   * :math:`F_{relative}` is the relative frequency of a unit :math:`F`
@@ -59,8 +62,8 @@ Where:
 
 
 The fasta files can be generated in two different ways:
-  1. CUB sequences corresponds to generated sequences having the same codon biais usage than the one present in fasterDB control exons (CCE exons). Then those sequences are enriched or impoverished for the unit :math:`F` by mutating every sequences, one nucleotide at a time.
-  2. MUT sequences corresponds to exon sequences selected randomly from FasterDB and then mutated, one nucleotide at a time, to increase or deacrease the frequency of
+  1. CUB sequences corresponds to generated sequences having the same codon biais usage than the one present in fasterDB control exons (CCE exons). Then those sequences are enriched or impoverished for the unit :math:`F` by mutating every sequences, one unit at a time.
+  2. MUT sequences corresponds to exon sequences selected randomly from FasterDB and then mutated, one unit at a time, to increase or deacrease the frequency of a given unit :math:`F`.
 
 
 Example
@@ -69,6 +72,7 @@ Example
 For example if we want to generate 100 couples of fasta files having:
   * A high content of **A** nucleotide : :math:`freq_{high}(A)=0.345`
   * A low content of **A** nucleotide : :math:`freq_{low}(A)=0.24`
+
 And checking for their content in hydrophilic and hydrophobic encoded amino acids, we must execute this command line :
 
 .. code-block:: bash
@@ -84,12 +88,14 @@ The content of this file is displayed below:
   Content of the result file
 
 .. note::
+
   1. The 2 lines before the last one, corresponds to the mean and the standart deviation of each column.
   2. The last line corresponds to the p-value of a t-test made on the average frequencies of Adenine between the 100 enriched and impoverished fasta files in Adenine (values in columns 1 and 2 without the 3 last lines).
-  2. The first column (exept the 2 last lines) corresponds to the mean frequency of sequences in each fasta file having an high content of **A** (:math:`freq_{high}(A)=0.345`)
-  3. The second column (exept the 2 last lines) corresponds to the mean frequency of sequences in fasta file having an low content of **A** (:math:`freq_{low}(A)=0.24`)
-  4. The third and last column (exept the 2 last lines) correspond the the relative frequency : :math:`F_{relative} = \frac{F_{interest} - F_{control}}{F_{control}}`
-  5. There is 6 other columns (not shown) that are exaclty the same as the 3 first but for hydrophilic, and hydrophobic average frequencies in the 100 enriched and impoveriched fasta files in Adenine.
+  3. The first column (exept the 3 last lines) corresponds to the mean frequency of sequences in each fasta file having an high content of **A** (:math:`freq_{high}(A)=0.345`)
+  4. The second column (exept the 3 last lines) corresponds to the mean frequency of sequences in fasta file having an low content of **A** (:math:`freq_{low}(A)=0.24`)
+  5. The third and last column (exept the 2 last lines) correspond the relative frequency of **A**:  :math:`F_{relative_A} = \frac{F_{high_A} - F_{low_A}}{F_{low_A}}`
+  6. There is 6 other columns (not shown) that are exaclty the same as the 3 first but for hydrophilic, and hydrophobic average frequencies in the 100 enriched and impoveriched fasta files in Adenine.
+
 
 
 Description of the script `src/random_fasta_dependant_feature_high_N_low.py`

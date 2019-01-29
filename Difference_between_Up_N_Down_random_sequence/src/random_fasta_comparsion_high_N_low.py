@@ -5,8 +5,10 @@
 Description:
 
 The goal of this script is to:
-    1. Create a lot of random fasta enriched in a particular unit (*nucleotide*, *di-nucleotide* or *feature*) and calculates the mean frequency of this unit in the fasta file
-    2. Create a lot of random fasta impoverished in **the same unit** (*nucleotide*, *di-nucleotide* or *feature*) and calculates the mean frequency of this unit in the fasta file
+    1. Create a lot of random fasta enriched in a particular unit (*nucleotide*, *di-nucleotide* or *feature*) and \
+    calculates the mean frequency of this unit in the fasta file
+    2. Create a lot of random fasta impoverished in **the same unit** (*nucleotide*, *di-nucleotide* or *feature*) \
+     and calculates the mean frequency of this unit in the fasta file
 
 And then compare their frequency for this unit for each couple of random fasta enriched and impoverished \
 (for this unit). To compare their frequency, the relative frequency is computed
@@ -26,7 +28,7 @@ import config
 feature_dic = {
     "Very-small": ["A", "C", "G", "S"],
     "Small#2": ["A", "C", "D", "G", "N", "P", "S", "T"],
-    "Large" : ["F", "I", "K", "L", "M", "R", "W", "Y"],
+    "Large": ["F", "I", "K", "L", "M", "R", "W", "Y"],
     "Disorder-promoting#1": ["A", "E", "G", "K", "P", "Q", "R", "S"],
     "Order-promoting#1": ["C", "F", "I", "L", "N", "W", "V", "Y"],
     "Disorder-promoting#2": ["A", "E", "G", "K", "P", "Q", "S"],
@@ -43,7 +45,6 @@ feature_dic = {
     "Positively-charged#1": ["R", "H", "K"],
     "Positively-charged#2": ["R", "K"]
 }
-
 
 
 def fasta_generation_nt_dnt(nt_dnt, freq, filename, output, iscub):
@@ -235,7 +236,7 @@ def get_mean_frequency_of_multiple_fasta(type_unit, unit, freq, iteration, outpu
     :param output: (string) path where the fasta_file will be created
     :param iscub: (bollean) True if we want to create random fasta respecting CCE codon bias usage \
     False if we want to mutate fasta sequence
-    :param itype_unit:  (string) the unit type we want to study, it can be *dnt* or *feature or *nt*
+    :param iunit_type:  (string) the unit type we want to study, it can be *dnt* or *feature or *nt*
     :param iunit: the unit of ``itype_unit`` for which we want to calculate the mean frequency in fasta files
     :return: (list of ``itaration`` float value) list of the mean of ``unit`` in the ``iteration`` fasta \
     files generated.
@@ -260,7 +261,8 @@ def get_mean_frequency_of_multiple_fasta(type_unit, unit, freq, iteration, outpu
             iunit2 = iunit.split(",")
             iunit_type2 = iunit_type.split(",")
             for i in range(len(iunit2)):
-                ilist[i].append(get_mean_frequency_in_fasta_file(output + filename_fasta + ".fasta", iunit_type2[i], iunit2[i]))
+                ilist[i].append(get_mean_frequency_in_fasta_file(output + filename_fasta + ".fasta",
+                                                                 iunit_type2[i], iunit2[i]))
     subprocess.check_call(["rm", output + filename_fasta + ".fasta"], stderr=subprocess.STDOUT)
     if iunit_type is None:
         return list_mean_fasta
@@ -274,13 +276,9 @@ def get_relative_freq_values(list_high, list_low):
 
     :param list_high: (list of float) list of mean frequencies in a particular unit in a list of fasta file enriched \
     for this unit
-    :param list_low: (list of float) list of mean frequencies in a particular unit in a list of fasta file impoverished \
-    for this unit
-    :return: (list of float) relative frequencies for each value of list_high and list low. i.e \
-
-    .. code-block:: bash
-
-        relative\_freq[i] = \frac{list_high[i] - list_low[i]}{list_low[i]}
+    :param list_low: (list of float) list of mean frequencies in a particular unit in a list of \
+    fasta file impoverished for this unit
+    :return: (list of float) relative frequencies for each value of list_high and list low.
 
 
     """
@@ -290,30 +288,29 @@ def get_relative_freq_values(list_high, list_low):
     return relative_freq
 
 
-def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, list_low_freq, ilist_high_freq, ilist_low_freq,
-                   iteration, output, iscub, iunit_type, iunit):
+def write_full_tsv_file(unit, freq_high, freq_low, list_high_freq, list_low_freq, ilist_high_freq, ilist_low_freq,
+                        iteration, output, iscub, iunit_type, iunit):
     """
     Create a tsv file.
 
-    :param unit_type: (string) the unit type we want to study : it can be *dnt* or *feature or *nt*
     :param unit: (string) the unit for which we want to calculate the median frequency
     :param freq_high: (float) the frequency of ``unit`` for the fasta file having an high content of the unit of \
     interest
     :param freq_low: (float) the frequency of ``unit`` for the fasta file having a low content of the unit of \
     interest
-    :param list_high_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta file enriched \
-    for this unit
-    :param list_low_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta file impoverished \
-    for this unit
-    :param ilist_high_freq: (list of list float) list of mean frequencies in particular unit(s) in a list of fasta file enriched \
-    for another unit
-    :param ilist_low_freq: (list of float) list of mean frequencies in particular unit(s) in a list of fasta file impoverished \
-    for another unit unit
+    :param list_high_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta \
+    file enriched for this unit
+    :param list_low_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta \
+    file impoverished for this unit
+    :param ilist_high_freq: (list of list float) list of mean frequencies in particular unit(s) in a list \
+    of fasta file enriched for another unit
+    :param ilist_low_freq: (list of float) list of mean frequencies in particular unit(s) in a list of fasta \
+    file impoverished for another unit unit
     :param iteration: (int) the number of fasta files we want to create
     :param output: (string) path where the fasta_file will be created
     :param iscub: (bollean) True if we want to create random fasta respecting CCE codon bias usage \
     False if we want to mutate fasta sequence
-    :param itype_unit:  (string) the unit type we want to study, it can be *dnt* or *feature or *nt*
+    :param iunit_type:  (string) the unit type we want to study, it can be *dnt* or *feature or *nt*
     :param iunit: the unit of ``itype_unit`` for which we want to calculate the mean frequency in fasta files
     """
     if iscub:
@@ -324,7 +321,8 @@ def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, li
     mean_rel_freq = np.mean(relative_freq)
     std_rel_freq = np.std(relative_freq, ddof=1)
 
-    irelative_freq = [get_relative_freq_values(ilist_high_freq[i], ilist_low_freq[i]) for i in range(len(ilist_high_freq))]
+    irelative_freq = [get_relative_freq_values(ilist_high_freq[i], ilist_low_freq[i])
+                      for i in range(len(ilist_high_freq))]
     imean_rel_freq = [np.mean(irelative_freq[i]) for i in range(len(irelative_freq))]
     istd_rel_freq = [np.std(irelative_freq[i], ddof=1) for i in range(len(irelative_freq))]
 
@@ -334,7 +332,6 @@ def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, li
     imean_high = [np.mean(ilist_high_freq[i]) for i in range(len(ilist_high_freq))]
     istd_high = [np.std(ilist_high_freq[i], ddof=1) for i in range(len(ilist_high_freq))]
 
-
     mean_low = np.mean(list_low_freq)
     std_low = np.std(list_low_freq, ddof=1)
 
@@ -343,8 +340,8 @@ def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, li
     unit = unit.replace("_", "-")
     iunit = iunit.replace("_", "-")
 
-    #T-test calculation
-    pvalue1 =  stretch_evalutator.r_ttest(list_high_freq, list_low_freq)
+    # T-test calculation
+    pvalue1 = stretch_evalutator.r_ttest(list_high_freq, list_low_freq)
     pvalue2 = [stretch_evalutator.r_ttest(ilist_high_freq[i], ilist_low_freq[i]) for i in range(len(ilist_high_freq))]
 
     full_high_freq = [list_high_freq] + ilist_high_freq
@@ -356,21 +353,26 @@ def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, li
     full_std_high = [std_high] + istd_high
     full_std_low = [std_low] + istd_low
     full_std_rel = [std_rel_freq] + istd_rel_freq
-    full_pval = [pvalue1] +  pvalue2
+    full_pval = [pvalue1] + pvalue2
 
-    with open(output + iunit_type + "_" + iunit + "_frequency_comparison_between_" + str(iteration) + "_" + fname + "_fasta_file-high_" + str(unit) + ":"+ str(freq_high) + "_low_" + str(unit) + ":" + str(freq_low) + ".tsv", "w") as outfile:
+    with open(output + iunit_type + "_" + iunit + "_frequency_comparison_between_" + str(iteration) + "_" + fname +
+              "_fasta_file-high_" + str(unit) + ":" + str(freq_high) + "_low_" + str(unit) + ":" + str(freq_low) +
+              ".tsv", "w") as outfile:
         outfile.write("frequency_fasta" + fname + "_" + str(unit) + ":" + str(freq_high) + "\t")
         outfile.write("frequency_fasta" + fname + "_" + str(unit) + ":" + str(freq_low) + "\t")
         outfile.write("relative_frequency_" + str(unit))
         iunit2 = iunit.split(",")
         for i in range(len(iunit2)):
-            outfile.write("\tfrequency_fasta" + fname + "_" + str(iunit2[i]) + "_in_" + str(unit) + ":" + str(freq_high))
-            outfile.write("\tfrequency_fasta" + fname + "_" + str(iunit2[i]) + "_in_" + str(unit) + ":" + str(freq_low))
+            outfile.write("\tfrequency_fasta" + fname + "_" + str(iunit2[i]) +
+                          "_in_" + str(unit) + ":" + str(freq_high))
+            outfile.write("\tfrequency_fasta" + fname + "_" + str(iunit2[i]) +
+                          "_in_" + str(unit) + ":" + str(freq_low))
             outfile.write("\trelative_frequency_" + str(iunit2[i]))
         outfile.write("\n")
         for i in range(len(full_high_freq[0])):
             for j in range(len(full_high_freq)):
-                outfile.write(str(full_high_freq[j][i]) + "\t" + str(full_low_freq[j][i]) + "\t" + str(full_relative_freq[j][i]) + "\t")
+                outfile.write(str(full_high_freq[j][i]) + "\t" + str(full_low_freq[j][i]) + "\t"
+                              + str(full_relative_freq[j][i]) + "\t")
             outfile.write("\n")
         for i in range(len(full_mean_high)):
             outfile.write(str(full_mean_high[i]) + "\t" + str(full_mean_low[i]) + "\t" + str(full_mean_rel[i]) + "\t")
@@ -383,7 +385,6 @@ def write_full_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, li
         outfile.write("T-test")
 
 
-
 def write_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, list_low_freq, iteration, output, iscub):
     """
     Create a tsv file.
@@ -394,10 +395,10 @@ def write_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, list_lo
     interest
         :param freq_low: (float) the frequency of ``unit`` for the fasta file having a low content of the unit of \
     interest
-    :param list_high_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta file enriched \
-    for this unit
-    :param list_low_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta file impoverished \
-    for this unit
+    :param list_high_freq: (list of float) list of mean frequencies in a particular unit in a list of \
+    fasta file enriched for this unit
+    :param list_low_freq: (list of float) list of mean frequencies in a particular unit in a list of fasta file \
+    impoverished for this unit
     :param iteration: (int) the number of fasta files we want to create
     :param output: (string) path where the fasta_file will be created
     :param iscub: (bollean) True if we want to create random fasta respecting CCE codon bias usage \
@@ -417,7 +418,8 @@ def write_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, list_lo
     mean_low = np.mean(list_low_freq)
     std_low = np.std(list_low_freq, ddof=1)
     unit = unit.replace("_", "-")
-    with open(output + unit_type + "_" + unit + "_frequency_comparison_between_" + str(iteration) + "_" + fname + "_fasta_file-high:"+str(freq_high) + "_low:" + str(freq_low) + ".tsv", "w") as outfile:
+    with open(output + unit_type + "_" + unit + "_frequency_comparison_between_" + str(iteration) + "_" + fname +
+              "_fasta_file-high:"+str(freq_high) + "_low:" + str(freq_low) + ".tsv", "w") as outfile:
         outfile.write("frequency_fasta" + fname + "_" + str(unit) + ":" + str(freq_high) + "\t")
         outfile.write("frequency_fasta" + fname + "_" + str(unit) + ":" + str(freq_low) + "\t")
         outfile.write("relative_frequency\n")
@@ -425,7 +427,6 @@ def write_tsv_file(unit_type, unit, freq_high, freq_low, list_high_freq, list_lo
             outfile.write(str(list_high_freq[i]) + "\t" + str(list_low_freq[i]) + "\t" + str(relative_freq[i]) + "\n")
         outfile.write(str(mean_high) + "\t" + str(mean_low) + "\t" + str(mean_rel_freq) + "\t" + "mean\n")
         outfile.write(str(std_high) + "\t" + str(std_low) + "\t" + str(sd_rel_freq) + "\t" + "std")
-
 
 
 def main(type_unit, unit, freq_high, freq_low, iteration, output, iscub, itype_unit, iunit):
@@ -453,13 +454,13 @@ def main(type_unit, unit, freq_high, freq_low, iteration, output, iscub, itype_u
                                                              itype_unit, unit)
         write_tsv_file(type_unit, unit, freq_high, freq_low, list_high_freq, list_low_freq, iteration, output, iscub)
     else:
-        list_high_freq, ifreq_high_list = get_mean_frequency_of_multiple_fasta(type_unit, unit, freq_high, iteration, output, iscub,
-                                                              itype_unit, iunit)
-        list_low_freq, ifreq_low_list = get_mean_frequency_of_multiple_fasta(type_unit, unit, freq_low, iteration, output, iscub,
-                                                             itype_unit, iunit)
-        write_full_tsv_file(type_unit, unit, freq_high, freq_low, list_high_freq, list_low_freq,
+        list_high_freq, ifreq_high_list = get_mean_frequency_of_multiple_fasta(type_unit, unit, freq_high, iteration,
+                                                                               output, iscub, itype_unit, iunit)
+        list_low_freq, ifreq_low_list = get_mean_frequency_of_multiple_fasta(type_unit, unit, freq_low,
+                                                                             iteration, output, iscub, itype_unit,
+                                                                             iunit)
+        write_full_tsv_file(unit, freq_high, freq_low, list_high_freq, list_low_freq,
                             ifreq_high_list, ifreq_low_list, iteration, output, iscub, itype_unit, iunit)
-
 
 
 def launcher():
@@ -497,27 +498,28 @@ We then calculate the mean and the standard deviation of:
 
     parser.add_argument('--iscub', dest='iscub', help="True to create cub sequence False to create mutated sequence",
                         default=False)
-    parser.add_argument('--type_unit_interest', dest='type_unit_interest', help="unit type for which we want to calculate the average frequency in fasta files",
+    parser.add_argument('--type_unit_interest', dest='type_unit_interest',
+                        help="unit type for which we want to calculate the average frequency in fasta files",
                         default=None)
-    parser.add_argument('--unit_interest', dest='unit_interest', help="unit for which we want to calculate the average frequency in fasta files",
+    parser.add_argument('--unit_interest', dest='unit_interest',
+                        help="unit for which we want to calculate the average frequency in fasta files",
                         default=None)
     req_arg = parser.add_argument_group("required arguments")
 
-    req_arg.add_argument('--type_unit', dest='type_unit', help="the type of unit we want to enrich (nt, dnt or feature)",
+    req_arg.add_argument('--type_unit', dest='type_unit', help="the type of unit we want to enrich "
+                                                               "(nt, dnt or feature)",
                          required=True)
     req_arg.add_argument('--unit', dest='unit', help="the unit for which we want to create random fasta having a low "
                                                      "content of if and a high content of it",
                          required=True)
     req_arg.add_argument('--freq_high', dest='freq_high', help="the frequency of unit in your enriched fasta file "
-                                                              "enriched for this unit",
-                        required=True)
+                                                               "enriched for this unit",
+                         required=True)
     req_arg.add_argument('--freq_low', dest='freq_low', help="the frequency of unit in your impoverished fasta file "
-                                                              "enriched for this unit",
-                        required=True)
+                                                             "enriched for this unit",
+                         required=True)
     req_arg.add_argument('--output', dest='output', help="path where the result will be created",
-                        required=True)
-
-
+                         required=True)
 
     args = parser.parse_args()
 
@@ -555,7 +557,9 @@ We then calculate the mean and the standard deviation of:
         print("Wrong value for iteration argument...")
         exit(1)
 
-    main(args.type_unit, args.unit, args.freq_high, args.freq_low, args.iteration, args.output, args.iscub, args.type_unit_interest, args.unit_interest)
+    main(args.type_unit, args.unit, args.freq_high, args.freq_low, args.iteration, args.output, args.iscub,
+         args.type_unit_interest, args.unit_interest)
+
 
 if __name__ == "__main__":
     launcher()

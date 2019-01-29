@@ -12,6 +12,7 @@ import subprocess
 import os
 import numpy as np
 
+
 def get_values_from_files(enrichment_file, sheet, row_name):
     """
     Get the interest value and the control value in ``enrichment_file`` stored in the sheet ``sheet`` under the \
@@ -28,7 +29,7 @@ def get_values_from_files(enrichment_file, sheet, row_name):
     df = xl.parse(sheet)
     test_val = df.loc[df[sheet.replace("nt_pos", "ntp")] == row_name, ["frequencies_of_the_interest_set",
                                                                        "average_frequencies_of_the_10000_sets"]].head(1)
-    return float(test_val.values[0][0]) , float(test_val.values[0][1])
+    return float(test_val.values[0][0]), float(test_val.values[0][1])
 
 
 def mann_withney_test_r(list_values1, list_values2):
@@ -84,21 +85,23 @@ def get_file_list(splicing_factor, regulation):
 
 
 def main():
-    analysis = {"SRSF1": {"sheet": ["nt_info", "nt_pos_info", "nt_pos_info", "amino_acid", "amino_acid", "amino_acid", "amino_acid"],
+    analysis = {"SRSF1": {"sheet": ["nt_info", "nt_pos_info", "nt_pos_info", "amino_acid",
+                                    "amino_acid", "amino_acid", "amino_acid"],
                           "row": ["G", "G3", "G1n2", "G", "A", "P", "K"],
-                          "fig": ["Fig_1A", "Fig_2B_G3", "Fig_2B_G1-2", "Fig_3B_G", "Fig_3B_A", "Fig_3B_P", "Fig_3B_K"],
+                          "fig": ["Fig_1A", "Fig_2B_G3", "Fig_2B_G1-2", "Fig_3B_G",
+                                  "Fig_3B_A", "Fig_3B_P", "Fig_3B_K"],
                           "regulation": ["down", "up"]},
                 "hnRNPL": {"sheet": ["feature", "feature"],
-                          "row": ["Hydroxylic", "Negatively-charged"],
-                          "fig": ["Fig_5F_Hydroxil_hnRNPL", "Fig_5F_Negatively_charged_hnRNPL"],
+                           "row": ["Hydroxylic", "Negatively-charged"],
+                           "fig": ["Fig_5F_Hydroxil_hnRNPL", "Fig_5F_Negatively_charged_hnRNPL"],
                            "regulation": ["up"]},
                 "PTBP1": {"sheet": ["feature", "feature"],
-                           "row": ["Hydroxylic", "Negatively-charged"],
-                           "fig": ["Fig_5F_Hydroxil_PTBP1", "Fig_5F_Negatively_charged_PTBP1"],
-                           "regulation": ["up"]}
+                          "row": ["Hydroxylic", "Negatively-charged"],
+                          "fig": ["Fig_5F_Hydroxil_PTBP1", "Fig_5F_Negatively_charged_PTBP1"],
+                          "regulation": ["up"]}
                 }
     res_dic = {}
-    output = os.path.realpath(os.path.dirname((__file__))).replace("src", "result/fig_stat.txt")
+    output = os.path.realpath(os.path.dirname(__file__)).replace("src", "result/fig_stat.txt")
     outfile = open(output, "w")
     for splicing_factor in analysis.keys():
         for regulation in analysis[splicing_factor]["regulation"]:
@@ -107,8 +110,8 @@ def main():
                 list_files, name_files = get_file_list(splicing_factor, regulation)
                 target_val, control_val = get_list_val(list_files, analysis[splicing_factor]["sheet"][i],
                                                        analysis[splicing_factor]["row"][i])
-                relative = (np.array(target_val) - np.array(control_val)) /  np.array(control_val) * 100
-                df = pd.DataFrame({"target": target_val, "ctrl": control_val, "relative": relative}, index = name_files)
+                relative = (np.array(target_val) - np.array(control_val)) / np.array(control_val) * 100
+                df = pd.DataFrame({"target": target_val, "ctrl": control_val, "relative": relative}, index=name_files)
                 df = df.transpose().loc[["target", "ctrl", "relative"]]
                 pval = mann_withney_test_r(target_val, control_val)
                 key = "%s_%s" % (analysis[splicing_factor]["fig"][i], regulation)
@@ -119,6 +122,6 @@ def main():
         outfile.write(res_dic[fig])
     outfile.close()
 
+
 if __name__ == "__main__":
     main()
-

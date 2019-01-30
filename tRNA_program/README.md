@@ -54,3 +54,12 @@ If you want to use the option `--recap_figure yes` then you must run the followi
 ```sh
 mkdir frequence_recap_graphics
 python2 getting_ace_cce_info.py frequence_recap_graphics
+```
+
+# Usage
+
+To understand how the program works you can run the following command :
+
+```sh
+python main_project.py --help
+```

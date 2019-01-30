@@ -75,8 +75,10 @@ def creating_list_exon(exon_type):
     return set_result
 
 
-def writing_results():
+def writing_results(output_folder):
     """
+    :param output_folder: (string) path were the results will be created.
+
     1 - Write a file named result_ACE_CCE_boxplot_recap.py
     It will contains foreach codon and amino_acid the list of their proportion in ACE and CCE sets.
     Those list will contain as much values as the number of ACE and CC exons presents in fasterDB
@@ -84,8 +86,8 @@ def writing_results():
     of the ACE and CCE exon that have 0, 1, 2, 3, 4, 5 or more of those codon, amino acid in their sequence
     """
     list_exon = creating_list_exon("ACE")
-    my_file = open("result_ACE_CCE_boxplot_recap.py", "w")
-    barplot_file = open("result_ACE_CCE_barplot_recap.py", "w")
+    my_file = open(output_folder + "/result_ACE_CCE_boxplot_recap.py", "w")
+    barplot_file = open(output_folder + "/result_ACE_CCE_barplot_recap.py", "w")
     counter = 1
     total = len(codon2aminoAcid.keys())
     pre_info = "Creating the ACE codon proportion list..."
@@ -137,5 +139,11 @@ def writing_results():
         counter += 1
     my_file.close()
 
-
-writing_results()
+if __name__ == "__main__":
+    if len(sys.argv[1]) > 1:
+        writing_results(sys.argv[1])
+    else:
+        print("Error : you must specify a folder were the files will be created when you call this script !")
+        print("Example : ")
+        print("%(prog)s myfolder")
+        exit(1)

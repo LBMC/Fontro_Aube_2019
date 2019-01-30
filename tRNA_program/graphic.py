@@ -802,7 +802,8 @@ def barplot_count_proportion(output, prop_count_list_up, prop_count_list_down, u
 
     # Creation of the ACE barplot
     ax3 = plt.subplot2grid((2, 2), (1, 0))
-    ax3.bar([0, 1, 2, 3, 4, 5], [ace_unit[0], ace_unit[1], ace_unit[2], ace_unit[3], ace_unit[4], ace_unit[5]],
+    print(ace_unit)
+    ax3.bar([0, 1, 2, 3], [ace_unit[0], ace_unit[1], ace_unit[2], ace_unit[3]],
             width=0.8, color="b", label=labels)
     ax3.set_xticks([0.4, 1.4, 2.4, 3.4, 4.4, 5.4])
     ax3.set_xticklabels(labels)
@@ -814,7 +815,7 @@ def barplot_count_proportion(output, prop_count_list_up, prop_count_list_down, u
 
     # Creation of the CCE barplot
     ax4 = plt.subplot2grid((2, 2), (1, 1))
-    ax4.bar([0, 1, 2, 3, 4, 5], [cce_unit[0], cce_unit[1], cce_unit[2], cce_unit[3], cce_unit[4], cce_unit[5]],
+    ax4.bar([0, 1, 2, 3], [cce_unit[0], cce_unit[1], cce_unit[2], cce_unit[3]],
             width=0.8, color="b", label=labels)
     ax4.set_xticks([0.4, 1.4, 2.4, 3.4, 4.4, 5.4])
     ax4.set_xticklabels(labels)

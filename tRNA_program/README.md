@@ -24,6 +24,7 @@ pip install -r requirement.txt # installation of required python modules
 ## Building required files
 
 ### File `config.py`
+
 Before doing anything, you must create a file named `config.py` with the following content
 
 ```py
@@ -34,3 +35,22 @@ host="<host>"
 database="<database>"
 ```
 "\<user\>" and "\<password\>" corresponds to you username and password that allow you to connect the "\<host\>" with the FasterDB ("\<database\>") database on it.
+
+### Frequencies files
+
+To build the frequencies files, you must have created and filled the file `config.py` as described in the previous section.
+Then just run the following command :
+
+```sh
+python2 frequences/frequencies_files_maker.py
+mkdir nucleotides_riche_codon_ACE_CCE
+python2 ACE_CCE_dic_maker.py --input frequences/input/input_ACE.txt --input2 frequences/input/input_CCE.txt --output nucleotides_riche_codon_ACE_CCE/
+```
+
+### Files for the summary figures.
+
+If you want to use the option `--recap_figure yes` then you must run the following command :
+
+```sh
+mkdir frequence_recap_graphics
+python2 getting_ace_cce_info.py frequence_recap_graphics

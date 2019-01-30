@@ -1,0 +1,10 @@
+argparse==1.1
+multiprocessing
+rpy2==2.8.4
+biopython==1.68
+matplotlib
+numpy
+xlsxwriter==0.9.6
+mysql-connector-python==2.1.4
+xlrd
+scipy==0.18.1

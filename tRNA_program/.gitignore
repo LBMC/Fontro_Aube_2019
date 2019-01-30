@@ -8,7 +8,9 @@
 /frequence_recap_graphics/getting_ace_cce_info.py
 /frequence_recap_graphics/result_ACE_CCE_barplot_recap.pyc
 /frequence_recap_graphics/result_ACE_CCE_boxplot_recap.pyc
-/frequences/
+/frequences/frequence/
+/frequences/input/
+/frequences/*.pyc
 /graphic.pyc
 /list_exon.pyc
 /main_project.pyc
@@ -26,3 +28,4 @@
 nucleotides_riche_codon_ACE_CCE/ACE_only.pyc
 nucleotides_riche_codon_ACE_CCE/CCE_only.pyc
 config.py
+config.pyc

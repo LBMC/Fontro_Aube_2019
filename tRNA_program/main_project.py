@@ -921,7 +921,6 @@ def creating_recap_graphics(output, up_exon_list, down_exon_list, up_down_exon_l
     os.mkdir(output + "recap_graphics/barplot/amino_acid/")
 
     # creating boxplot for codons
-    """
     print "Creating boxplot summary figure for codon..."
 
     for codon in codon2aminoAcid.keys():
@@ -952,7 +951,6 @@ def creating_recap_graphics(output, up_exon_list, down_exon_list, up_down_exon_l
         # creating the graphics...
         boxplot_composition(output + "recap_graphics/boxplot/amino_acid/", up_prop_list, down_prop_list,
                             up_down_prop_list, aa)
-    """
     # ------------------------- barplot
     print "Creating barplot summary figure for codon..."
 
@@ -968,10 +966,10 @@ def creating_recap_graphics(output, up_exon_list, down_exon_list, up_down_exon_l
         fichier = open(output + "recap_graphics/barplot/up_count_codon" ,"a")
         fichier.write(codon + "\t" + str(up_prop_list[0]) + "\t" + str(up_prop_list[1]) + "\t" + str(up_prop_list[2]) + "\t" + str(up_prop_list[3]) + "\t" + str(up_prop_list[4]) + "\n")
         fichier.close()
-        fichier = open(output + "recap_graphics/barplot/down_count_codon" ,"a")
-        fichier.write(codon + "\t" + str(down_prop_list[0]) + "\t" + str(down_prop_list[1]) + "\t" + str(down_prop_list[2]) + "\t" + str(down_prop_list[3]) + "\t" + str(down_prop_list[4]) + "\n")
-        fichier.close()
-        fichier.close()
+        if down_exon_list is not None:
+            fichier = open(output + "recap_graphics/barplot/down_count_codon" ,"a")
+            fichier.write(codon + "\t" + str(down_prop_list[0]) + "\t" + str(down_prop_list[1]) + "\t" + str(down_prop_list[2]) + "\t" + str(down_prop_list[3]) + "\t" + str(down_prop_list[4]) + "\n")
+            fichier.close()
     print "Creating boxplot for amino_acid..."
     for aa in amino_acid2nature.keys():
         # obtaining the value we need to construct the graphics
@@ -985,18 +983,20 @@ def creating_recap_graphics(output, up_exon_list, down_exon_list, up_down_exon_l
         fichier = open(output + "recap_graphics/barplot/up_count_aa" ,"a")
         fichier.write(aa + "\t" + str(up_prop_list[0]) + "\t" + str(up_prop_list[1]) + "\t" + str(up_prop_list[2]) + "\t" + str(up_prop_list[3]) + "\t" + str(up_prop_list[4]) + "\n")
         fichier.close()
-        fichier = open(output + "recap_graphics/barplot/down_count_aa" ,"a")
-        fichier.write(aa + "\t" + str(down_prop_list[0]) + "\t" + str(down_prop_list[1]) + "\t" + str(down_prop_list[2]) + "\t" + str(down_prop_list[3]) + "\t" + str(down_prop_list[4]) +"\n")
-        fichier.close()
+        if down_exon_list is not None:
+            fichier = open(output + "recap_graphics/barplot/down_count_aa" ,"a")
+            fichier.write(aa + "\t" + str(down_prop_list[0]) + "\t" + str(down_prop_list[1]) + "\t" + str(down_prop_list[2]) + "\t" + str(down_prop_list[3]) + "\t" + str(down_prop_list[4]) +"\n")
+            fichier.close()
 
         # creating the count graphics...
         barplot_count_proportion(output + "recap_graphics/barplot/amino_acid/", up_prop_list, down_prop_list, aa)
         fichier = open(output + "recap_graphics/barplot/up_prop_aa" ,"a")
         fichier.write(aa + "\t" + str(float(up_prop_list[0])/up_prop_list[4]) + "\t" + str(float(up_prop_list[1])/up_prop_list[4]) + "\t" + str(float(up_prop_list[2])/up_prop_list[4]) + "\t" + str(float(up_prop_list[3])/up_prop_list[4]) + "\n")
         fichier.close()
-        fichier = open(output + "recap_graphics/barplot/down_prop_aa" ,"a")
-        fichier.write(aa + "\t" + str(float(down_prop_list[0])/down_prop_list[4]) + "\t" + str(float(down_prop_list[1])/down_prop_list[4]) + "\t" + str(float(down_prop_list[2])/down_prop_list[4]) + "\t" + str(float(down_prop_list[3])/down_prop_list[4]) +"\n")
-        fichier.close()
+        if down_exon_list is not None:
+            fichier = open(output + "recap_graphics/barplot/down_prop_aa" ,"a")
+            fichier.write(aa + "\t" + str(float(down_prop_list[0])/down_prop_list[4]) + "\t" + str(float(down_prop_list[1])/down_prop_list[4]) + "\t" + str(float(down_prop_list[2])/down_prop_list[4]) + "\t" + str(float(down_prop_list[3])/down_prop_list[4]) +"\n")
+            fichier.close()
 
 
 def up_and_down_launcher(up_exon_list, down_exon_list, up_and_down_list, output_folder, enrichment, exon_type,
@@ -1261,8 +1261,7 @@ If you want to test whether your exons set is enriched (or impoverished) in part
 acid nature, just precise it with the argument --enrichment True.
 Moreover you have the possibility to chose the size of the control sets that will be use to test the enrichment or
 impoverishment of your interest set. The bigger the control sets is, the more accurate the results will be.
-    """,
-                                     usage='%(prog)s --input input_file.txt [--output an output folder] ')
+    """)
     # Arguments for the parser
 
     parser.add_argument('--input', dest='input',
@@ -1479,5 +1478,5 @@ impoverishment of your interest set. The bigger the control sets is, the more ac
                 creating_recap_graphics(args.output, up_exon_list, down_exon_list, all_exon_list)
 
 
-
-launcher()  # launches the program
+if __name__ == "__main__":
+    launcher()  # launches the program
